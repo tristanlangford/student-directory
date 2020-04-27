@@ -12,21 +12,6 @@ students = [
 {name: "Norman Bates", cohort: :november}
 ]
 
-months_array = [
-"january",
-"february",
-"march",
-"april",
-"may",
-"june",
-"july",
-"august",
-"september",
-"october",
-"november",
-"december"
-]
-
 def month_check(month)
 months_array = [
 "january",
