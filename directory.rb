@@ -12,13 +12,56 @@ students = [
 {name: "Norman Bates", cohort: :november}
 ]
 
+months_array = [
+"january",
+"february",
+"march",
+"april",
+"may",
+"june",
+"july",
+"august",
+"september",
+"october",
+"november",
+"december"
+]
+
+def month_check(month)
+months_array = [
+"january",
+"february",
+"march",
+"april",
+"may",
+"june",
+"july",
+"august",
+"september",
+"october",
+"november",
+"december"
+]
+  loop do
+    if months_array.include?(month.downcase)
+      return month.capitalize
+    else
+      puts "ERROR: Please enter a month"
+      month = gets.chomp
+    end
+  end
+end
+
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit enter twices"
   students = []
   name = gets.chomp
   while name.empty? == false
-    students.push({name: name, cohort: :november})
+    puts "Enter #{name}'s cohort"
+    cohort_month = gets.chomp
+    month = month_check(cohort_month)
+    students.push({name: name, cohort: month})
     puts "Now we have #{students.count} students"
     name = gets.chomp
   end
@@ -31,7 +74,11 @@ def print_header
 end
 
 def print(names)
-  names.each { |students| puts "#{students[:name]} (#{students[:cohort]} cohort)"  }
+  list_num = 1
+  names.each { |students| 
+    puts "#{list_num}. #{students[:name]} (#{students[:cohort]} cohort)"  
+    list_num += 1
+  }
 end
 
 def print_footer(names)
