@@ -47,7 +47,11 @@ def input_students # Method to request student details
     cohort_month = gets.chomp # user cohort input
     month = month_check(cohort_month) # call to month check method
     students.push({name: name, cohort: month}) # push values into array with keys
-    puts "Now we have #{students.count} students" # count check for user
+    if students.count == 1
+      puts "Now we have our first great student" # first student message
+    else
+      puts "Now we have #{students.count} students" # count check for user
+    end
     name = gets.chomp # next input
   end
   return students # return array of students
