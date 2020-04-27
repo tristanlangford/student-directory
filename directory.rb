@@ -53,12 +53,23 @@ def input_students # Method to request student details
   return students # return array of students
 end
 
+def list_by_cohort(students) # Method to request view of certain cohort
+  puts "Name cohort to view:" # request input
+  month = gets.chomp # take month input
+  cohort_month = month_check(month) # check they entered a month
+  list = [] # new array to caputre qualifying students
+  students.map { |student|
+    list.push(student) if student[:cohort] == cohort_month
+  } # iterate through students to find correct ones
+  return list # return the list
+end 
+
 def print_header # header for final output
   puts "The students of Villain Academy"
   puts "----------" # space for asthetics
 end
 
-def print(names) # method to print names in list
+def print_students(names) # method to print names in list
   list_num = 1 # variable for list index
   names.each { |students| 
     puts "#{list_num}. #{students[:name]} (#{students[:cohort]} cohort)"  
@@ -71,7 +82,8 @@ def print_footer(names) # footer for final output
 end
 
 students = input_students # start by requesting users
-print_header # print header
-print(students) # print list of students
+cohort = list_by_cohort(students)
+print_header
+print_students(cohort)
 print_footer(students) # print footer
 
