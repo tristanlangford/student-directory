@@ -28,11 +28,18 @@ months_array = [ # array of month
 "december"
 ]
   loop do # loop until input correct
-    if months_array.include?(month.downcase) # check month in array & downcase input
-      return month.capitalize # return month capitalized
+    if month.empty?
+      puts "If not month is entered, it will be set to default (January)"
+      input = gets.chomp
+      month = input if input.empty? == false
+      return months_array[0].capitalize if input.empty?
     else
-      puts "ERROR: Please enter a month" # error message
-      month = gets.chomp # updates month with new inpu
+      if months_array.include?(month.downcase) # check month in array & downcase input
+        return month.capitalize # return month capitalized
+      else
+        puts "ERROR: Please enter a month" # error message
+        month = gets.chomp # updates month with new inpu
+      end
     end
   end
 end
@@ -74,15 +81,20 @@ def print_header # header for final output
 end
 
 def print_students(names) # method to print names in list
-  list_num = 1 # variable for list index
-  names.each { |students| 
-    puts "#{list_num}. #{students[:name]} (#{students[:cohort]} cohort)"  
-    list_num += 1 # iterate through list and print line above & update index
-  }
+  if names == []
+    puts "No Students at Villains Academy"
+  else
+    list_num = 1 # variable for list index
+    names.each { |students| 
+      puts "#{list_num}. #{students[:name]} (#{students[:cohort]} cohort)"  
+      list_num += 1 # iterate through list and print line above & update index
+    }
+  end
 end
 
 def print_footer(names) # footer for final output
-  puts "Overall we have #{names.count} great students" # tells user count of students
+  # tells user count of students. Only if students exist
+  puts "Overall we have #{names.count} great students" if names.count > 0
 end
 
 students = input_students # start by requesting users
