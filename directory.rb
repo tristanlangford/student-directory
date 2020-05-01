@@ -1,4 +1,10 @@
-puts_students = Proc.new { |students| puts "#{students[:name]} (#{students[:cohort]} cohort)" }
+def puts_students(student_array)
+  index = 1
+  student_array.each { |students| 
+    puts "#{index}: #{students[:name]} (#{students[:cohort]} cohort)" 
+    index += 1
+  }
+end 
 
 def interactive_menu
   loop do 
@@ -11,13 +17,14 @@ def print_menu
   puts "1. Inputs Students"
   puts "2. Show all Students"
   puts "3. Show Students by Cohort"
+  puts "4. Save changes"
   puts "9. Exit"
 end
 
 def process(selection) # takes user input and acts on it
   case selection
     when "1"
-      @students = input_students
+      input_students
     when "2"
       if @students == nil 
         puts "Currently no Students"
@@ -33,11 +40,23 @@ def process(selection) # takes user input and acts on it
         list_by_cohort
         print_footer
       end
+    when "4"
+      save_students
     when "9"
       exit
     else
       puts "I don't know what you meant, try again"
   end
+end
+
+def save_students
+  file = File.open("students.csv", "w")
+  @students.each { |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts(csv_line)
+  }
+  file.close
 end
 
 def month_check(month) # method to check month input correct
@@ -99,7 +118,7 @@ def list_by_cohort # Method to request view of certain cohort
   if list.empty?
     puts "No students in #{cohort_month} cohort"
   else
-    list.puts_students # iterate through list and print line above
+    puts_students(list) # iterate through list and print line above
   end
 end 
 
@@ -109,8 +128,7 @@ def print_header # header for final output
 end
 
 def print_students # method to print names in list
-  list_num = 1 # variable for list index
-  @students.puts_students 
+  puts_students(@students)
 end
 
 
