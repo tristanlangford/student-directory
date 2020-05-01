@@ -18,15 +18,18 @@ def print_menu
   puts "2. Show all Students"
   puts "3. Show Students by Cohort"
   puts "4. Save changes"
+  puts "5. Load Students from file"
   puts "9. Exit"
 end
+
+@students = []
 
 def process(selection) # takes user input and acts on it
   case selection
     when "1"
       input_students
     when "2"
-      if @students == nil 
+      if @students.empty? 
         puts "Currently no Students"
       else
         print_header
@@ -34,7 +37,7 @@ def process(selection) # takes user input and acts on it
         print_footer
       end
     when "3"
-      if @students == nil
+      if @students.empty?
         puts "Currently no Students"
       else
         list_by_cohort
@@ -42,11 +45,22 @@ def process(selection) # takes user input and acts on it
       end
     when "4"
       save_students
+    when "5"
+      load_students
     when "9"
       exit
     else
       puts "I don't know what you meant, try again"
   end
+end
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each { |line|
+    name, cohort = line.chomp.split(",")
+    @students = @students.push({name: name, cohort: cohort})
+  }
+  file.close
 end
 
 def save_students
@@ -94,7 +108,6 @@ end
 def input_students # Method to request student details
   puts "Please enter the names of the students" # The request for name
   puts "To finish, just hit enter twices" # How to exit input method
-  @students = [] # Create array to capture details
   name = gets.chomp # capture name input
   while name.empty? == false # check to see if use wants to finish
     puts "Enter #{name}'s cohort" # Request for cohort
