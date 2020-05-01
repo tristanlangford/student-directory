@@ -28,7 +28,9 @@ def interactive_menu
         if master_student_list.empty? 
           puts "Currently no Students"
         else
+          print_header
           print_students(master_student_list)
+          print_footer(master_student_list)
         end
       when "3"
         cohort = list_by_cohort(master_student_list)
@@ -36,6 +38,7 @@ def interactive_menu
           puts "Currently no Students"
         else
           print_students(cohort)
+          print_footer(master_student_list)
         end
       when "9"
         exit
