@@ -12,6 +12,40 @@ students = [
 {name: "Norman Bates", cohort: :november}
 ]
 
+def interactive_menu
+  master_student_list = []
+  loop do
+    puts "1. Inputs Students"
+    puts "2. Show all Students"
+    puts "3. Show Students by Cohort"
+    puts "9. Exit"
+    selection = gets.chomp
+    case selection
+      when "1"
+        students = input_students
+        master_student_list = master_student_list + students
+      when "2"
+        if master_student_list.empty? 
+          puts "Currently no Students"
+        else
+          print_students(master_student_list)
+        end
+      when "3"
+        cohort = list_by_cohort(master_student_list)
+        if cohort == nil
+          puts "Currently no Students"
+        else
+          print_students(cohort)
+        end
+      when "9"
+        exit
+      else
+        puts "I don't know what you meant, try again"
+    end
+  end
+end
+        
+
 def month_check(month) # method to check month input correct
 months_array = [ # array of month
 "january",
@@ -55,9 +89,9 @@ def input_students # Method to request student details
     month = month_check(cohort_month) # call to month check method
     students.push({name: name, cohort: month}) # push values into array with keys
     if students.count == 1
-      puts "Now we have our first great student" # first student message
+      puts "Now we have our first great student(Press Enter again to stop)" # first student message
     else
-      puts "Now we have #{students.count} students" # count check for user
+      puts "Now we have #{students.count} students(Press Enter again to stop)" # count check for user
     end
     name = gets.chomp # next input
   end
@@ -81,7 +115,7 @@ def print_header # header for final output
 end
 
 def print_students(names) # method to print names in list
-  if names == []
+  if names.empty?
     puts "No Students at Villains Academy"
   else
     list_num = 1 # variable for list index
@@ -97,9 +131,4 @@ def print_footer(names) # footer for final output
   puts "Overall we have #{names.count} great students" if names.count > 0
 end
 
-students = input_students # start by requesting users
-cohort = list_by_cohort(students)
-print_header
-print_students(cohort)
-print_footer(students) # print footer
-
+interactive_menu
