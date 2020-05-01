@@ -1,3 +1,5 @@
+puts_students = Proc.new { |students| puts "#{students[:name]} (#{students[:cohort]} cohort)" }
+
 def interactive_menu
   loop do 
     print_menu # print options to user
@@ -86,24 +88,18 @@ def input_students # Method to request student details
     end
     name = gets.chomp # next input
   end
-  return @students # return array of students
 end
 
 def list_by_cohort # Method to request view of certain cohort
   puts "Name cohort to view:" # request input
   cohort_month = month_check(gets.chomp) # check they entered a month
   list = [] # new array to caputre qualifying students
-  @students.map { |student|
-    list.push(student) if student[:cohort] == cohort_month
-  } # iterate through students to find correct ones
+  # iterate through students to find correct ones
+  @students.map { |student| list.push(student) if student[:cohort] == cohort_month }
   if list.empty?
     puts "No students in #{cohort_month} cohort"
   else
-    list_num = 1 
-    list.each{ |students|
-      puts "#{list_num}: #{students[:name]} (#{students[:cohort]} cohort)"
-      list_num += 1 # iterate through list and print line above & update index
-    } # return the list
+    list.puts_students # iterate through list and print line above
   end
 end 
 
@@ -114,10 +110,7 @@ end
 
 def print_students # method to print names in list
   list_num = 1 # variable for list index
-  @students.each { |students| 
-    puts "#{list_num}: #{students[:name]} (#{students[:cohort]} cohort)"  
-    list_num += 1 # iterate through list and print line above & update index
-  }
+  @students.puts_students 
 end
 
 
