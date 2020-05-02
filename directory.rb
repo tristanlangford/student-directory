@@ -1,3 +1,15 @@
+def try_load_file
+  filename = ARGV.first # first argument from command line
+  filename = "students.csv" if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry #{filename} doesn't exist"
+    exit
+  end
+end
+
 def puts_students(student_array)
   index = 1
   student_array.each { |students| 
@@ -9,7 +21,7 @@ end
 def interactive_menu
   loop do 
     print_menu # print options to user
-    process(gets.chomp) # take user input and process code as per interactive menu
+    process(STDIN.gets.chomp) # take user input and process code as per interactive menu
   end
 end
 
@@ -46,7 +58,16 @@ def process(selection) # takes user input and acts on it
     when "4"
       save_students
     when "5"
-      load_students
+      puts "Enter file name you want to load"
+      filename = STDIN.gets.chomp
+      if filename == "students.csv"
+        puts "students.csv already loaded"
+      elsif File.exists?(filename)
+        load_students(filename)
+        puts "Loaded #{@students.count} from #{filename}" 
+      else
+        puts "Sorry #{filename} doesn't exist"
+      end
     when "9"
       exit
     else
@@ -54,7 +75,7 @@ def process(selection) # takes user input and acts on it
   end
 end
 
-def load_students
+def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each { |line|
     name, cohort = line.chomp.split(",")
@@ -64,13 +85,20 @@ def load_students
 end
 
 def save_students
-  file = File.open("students.csv", "w")
-  @students.each { |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts(csv_line)
-  }
-  file.close
+  puts "Enter file you want to save to (Press Enter again to save to default)"
+  filename = STDIN.gets.chomp
+  filename = "students.csv" if filename.empty?
+  if File.exists?(filename)
+    file = File.open("students.csv", "w")
+    @students.each { |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts(csv_line)
+    }
+    file.close
+  else
+    puts "Sorry #{filename} doesn't exist"
+  end
 end
 
 def month_check(month) # method to check month input correct
@@ -108,7 +136,7 @@ end
 def input_students # Method to request student details
   puts "Please enter the names of the students" # The request for name
   puts "To finish, just hit enter twices" # How to exit input method
-  name = gets.chomp # capture name input
+  name = STDIN.gets.chomp # capture name input
   while name.empty? == false # check to see if use wants to finish
     puts "Enter #{name}'s cohort" # Request for cohort
     month = month_check(gets.chomp) # call to month check method
@@ -118,13 +146,13 @@ def input_students # Method to request student details
     else
       puts "Now we have #{@students.count} students(Press Enter again to stop)" # count check for user
     end
-    name = gets.chomp # next input
+    name = STDIN.gets.chomp # next input
   end
 end
 
 def list_by_cohort # Method to request view of certain cohort
   puts "Name cohort to view:" # request input
-  cohort_month = month_check(gets.chomp) # check they entered a month
+  cohort_month = month_check(STDIN.gets.chomp) # check they entered a month
   list = [] # new array to caputre qualifying students
   # iterate through students to find correct ones
   @students.map { |student| list.push(student) if student[:cohort] == cohort_month }
@@ -150,4 +178,5 @@ def print_footer # footer for final output
   puts "Overall we have #{@students.count} great students" if @students.count > 0
 end
 
+try_load_file
 interactive_menu
