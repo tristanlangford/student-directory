@@ -76,12 +76,12 @@ def process(selection) # takes user input and acts on it
 end
 
 def load_students(filename = "students.csv")
-  file = File.open("students.csv", "r")
-  file.readlines.each { |line|
-    name, cohort = line.chomp.split(",")
-    @students = @students.push({name: name, cohort: cohort})
+  File.open("students.csv", "r") { |f|
+    f.readlines.each { |line|
+      name, cohort = line.chomp.split(",")
+      @students = @students.push({name: name, cohort: cohort})
+    }
   }
-  file.close
 end
 
 def save_students
@@ -89,13 +89,13 @@ def save_students
   filename = STDIN.gets.chomp
   filename = "students.csv" if filename.empty?
   if File.exists?(filename)
-    file = File.open("students.csv", "w")
-    @students.each { |student|
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts(csv_line)
+    File.open("#{filename}", "w") { |f|
+      @students.each { |student|
+        student_data = [student[:name], student[:cohort]]
+        csv_line = student_data.join(",")
+        f.puts(csv_line)
+      }
     }
-    file.close
   else
     puts "Sorry #{filename} doesn't exist"
   end
