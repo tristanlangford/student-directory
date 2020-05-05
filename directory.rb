@@ -1,3 +1,5 @@
+require 'csv'
+
 def try_load_file
   filename = ARGV.first # first argument from command line
   filename = "students.csv" if filename.nil?
@@ -76,12 +78,10 @@ def process(selection) # takes user input and acts on it
 end
 
 def load_students(filename = "students.csv")
-  File.open("students.csv", "r") { |f|
-    f.readlines.each { |line|
-      name, cohort = line.chomp.split(",")
+  CSV.foreach(filename) do |row|
+      name, cohort = row
       @students = @students.push({name: name, cohort: cohort})
-    }
-  }
+    end
 end
 
 def save_students
@@ -89,13 +89,12 @@ def save_students
   filename = STDIN.gets.chomp
   filename = "students.csv" if filename.empty?
   if File.exists?(filename)
-    File.open("#{filename}", "w") { |f|
+    CSV.open("#{filename}", "w") do |csv|
       @students.each { |student|
         student_data = [student[:name], student[:cohort]]
-        csv_line = student_data.join(",")
-        f.puts(csv_line)
+        csv << student_data
       }
-    }
+    end
   else
     puts "Sorry #{filename} doesn't exist"
   end
