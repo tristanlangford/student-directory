@@ -14,14 +14,14 @@ end
 
 def puts_students(student_array)
   index = 1
-  student_array.each { |students| 
-    puts "#{index}: #{students[:name]} (#{students[:cohort]} cohort)" 
+  student_array.each { |students|
+    puts "#{index}:- #{students[:name]} (#{students[:cohort]} cohort)" 
     index += 1
   }
-end 
+end
 
 def interactive_menu
-  loop do 
+  loop do
     print_menu # print options to user
     process(STDIN.gets.chomp) # take user input and process code as per interactive menu
   end
@@ -43,7 +43,7 @@ def process(selection) # takes user input and acts on it
     when "1"
       input_students
     when "2"
-      if @students.empty? 
+      if @students.empty?
         puts "Currently no Students"
       else
         print_header
@@ -66,7 +66,7 @@ def process(selection) # takes user input and acts on it
         puts "students.csv already loaded"
       elsif File.exists?(filename)
         load_students(filename)
-        puts "Loaded #{@students.count} from #{filename}" 
+        puts "Loaded #{@students.count} from #{filename}"
       else
         puts "Sorry #{filename} doesn't exist"
       end
@@ -120,7 +120,7 @@ months_array = [ # array of month
       puts "If no month is entered, it will be set to default (January)"
       input = gets.chomp
       month = input if input.empty? == false
-      return months_array[0].capitalize if input.empty? 
+      return months_array[0].capitalize if input.empty?
     else
       if months_array.include?(month.downcase) # check month in array & downcase input
         return month.capitalize # return month capitalized
@@ -160,11 +160,11 @@ def list_by_cohort # Method to request view of certain cohort
   else
     puts_students(list) # iterate through list and print line above
   end
-end 
+end
 
 def print_header # header for final output
   puts "The students of Villain Academy"
-  puts "----------" 
+  puts "----------"
 end
 
 def print_students # method to print names in list
